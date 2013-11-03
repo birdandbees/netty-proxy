@@ -28,7 +28,7 @@ public class LatencyTestClient {
 
     }
 
-    public void run() throws Exception {
+    public void run(final int delay, final int threshold) throws Exception {
 
         EventLoopGroup group = new NioEventLoopGroup();
         try {
@@ -42,7 +42,7 @@ public class LatencyTestClient {
                         public void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(
                                     new LoggingHandler(LogLevel.INFO),
-                                    new LatencyTestClientHandler());
+                                    new LatencyTestClientHandler(delay, threshold));
                         }
                     });
 
