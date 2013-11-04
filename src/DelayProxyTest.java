@@ -3,13 +3,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import redis.clients.jedis.Jedis;
 
-import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,15 +20,14 @@ import static org.junit.Assert.fail;
  */
 @RunWith(JUnit4.class)
 public class DelayProxyTest {
-    private static TimestampServer testServer;
-
 
     public static void checkTestPortsAreAvailable() throws IOException, InterruptedException {
 
-        String[] cmd = {"/bin/sh", "-c", "netstat -nat | grep ':9001|:9002|:8999|:8998'"};
+        String[] cmd = { "/bin/sh", "-c", "netstat -nat | grep ':9001|:9002|:8999|:8998'" };
         Process check = Runtime.getRuntime().exec(cmd);
         BufferedReader br = new BufferedReader(new InputStreamReader(check.getInputStream()));
-        if (br.readLine() != null) {
+        if (  br.readLine() != null )
+        {
 
             throw new IOException("ports are not available");
         }
@@ -36,38 +35,41 @@ public class DelayProxyTest {
     }
 
     @BeforeClass
-    public static void setUp() throws IOException, InterruptedException, Exception {
+    public static void setUp() throws IOException, InterruptedException {
         checkTestPortsAreAvailable();
-        testServer = new TimestampServer(9002);
-        testServer.run();
+        ProcessBuilder pb = new ProcessBuilder("redis-server", "--port 9002");
+        pb.start();
 
     }
 
     @AfterClass
     public static void tearDown() throws IOException {
-
-        testServer.shutDown();
-        String[] cmd = {"/bin/sh", "-c", "kill -9 $(lsof -i:9001 -i:8999 -i:8998 -t)"};
+        String[] cmd = { "/bin/sh", "-c", "kill -9 $(lsof -i:9002 -t)" };
         Runtime.getRuntime().exec(cmd);
 
     }
 
     @Test
-    public void testNewDelayProxy() throws Exception {
+    public void testNewDelayProxy() {
         DelayProxy delayProxy = new DelayProxy(9001, 9002);
-        LatencyTestClient testClient = new LatencyTestClient("localhost", 9002);
-        testClient.run(0, 1);
-
+        Jedis jedis = new Jedis("localhost", 9002);
+        jedis.flushAll();
+        jedis.set("american_horror_story", "Ryan_Murphy");
+        String author = jedis.get("american_horror_story");
+        assert (author).equals("Ryan_Murphy");
 
     }
 
     @Test
-    public void testDelayProxyCanStart() throws Exception {
+    public void testDelayProxyCanStart() throws InterruptedException {
 
         DelayProxy delayProxy = new DelayProxy(9001, 9002);
-        LatencyTestClient testClient = new LatencyTestClient("localhost", 9002);
+        Jedis jedis = new Jedis("localhost", 9002);
         delayProxy.start();
-        testClient.run(0, 0);
+        jedis.flushAll();
+        jedis.set("dracular", "Bram_Stoker");
+        String author = jedis.get("dracular");
+        assert (author).equals("Bram_Stoker");
         delayProxy.shutDown();
     }
 
@@ -81,26 +83,28 @@ public class DelayProxyTest {
     }
 
     @Test
-    public void testDelayProxyCanRelay() throws Exception {
+    public void testDelayProxyCanRelay() {
         DelayProxy delayProxy = new DelayProxy(8998, 9002);
-        LatencyTestClient testClient = new LatencyTestClient("localhost", 8998);
         delayProxy.start();
+        Jedis jedis = new Jedis("localhost", 8998);
         delayProxy.delay(0);
-        testClient.run(0, 0);
+        jedis.flushAll();
+        jedis.set("dracular", "Bram_Stoker");
+        String author = jedis.get("dracular");
+        assert (author).equals("Bram_Stoker");
         delayProxy.shutDown();
     }
 
-    @Test
+    @Test(expected = redis.clients.jedis.exceptions.JedisConnectionException.class)
     public void testDelayProxyCanDelay() {
         DelayProxy delayProxy = new DelayProxy(9001, 9002);
         try {
             delayProxy.start();
-            LatencyTestClient testClient = new LatencyTestClient("localhost", 9001);
-            delayProxy.delay(5);
-            testClient.run(5, 1);
-
-        } catch (Exception e) {
-            fail();
+            Jedis jedis = new Jedis("localhost", 9001);
+            delayProxy.delay(20);
+            jedis.flushAll();
+            //jedis.set("dracular", "Bram_Stoker");
+            //String author = jedis.get("dracular");
         } finally {
             delayProxy.shutDown();
         }
@@ -127,9 +131,9 @@ public class DelayProxyTest {
 
 
     }
-
     @Test
-    public void testEquals() {
+    public void testEquals()
+    {
         DelayProxy delayProxy1 = new DelayProxy(9000, 9002);
         DelayProxy delayProxy2 = new DelayProxy(9000, 9110);
         assertTrue(delayProxy1.equals(delayProxy2));
