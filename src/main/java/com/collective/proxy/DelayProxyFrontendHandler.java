@@ -1,4 +1,4 @@
-/**
+package main.java.com.collective.proxy; /**
  * Created with IntelliJ IDEA.
  * User: jingjing
  * Date: 10/29/13
@@ -39,7 +39,7 @@ public class DelayProxyFrontendHandler extends ChannelInboundHandlerAdapter {
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {
                 if (future.isSuccess()) {
-                   inboundChannel.read();
+                    inboundChannel.read();
                 } else {
 
                     inboundChannel.close();

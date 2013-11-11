@@ -1,3 +1,5 @@
+package test.java.com.collective.proxy;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;

@@ -1,4 +1,4 @@
-/**
+package main.java.com.collective.proxy; /**
  * Created with IntelliJ IDEA.
  * User: jingjing
  * Date: 10/29/13
@@ -8,7 +8,6 @@
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.logging.*;
 
 public class DelayProxyInitializer extends ChannelInitializer<SocketChannel> {
 

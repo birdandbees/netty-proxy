@@ -1,4 +1,4 @@
-/**
+package main.java.com.collective.proxy; /**
  * Created with IntelliJ IDEA.
  * User: jingjing
  * Date: 10/29/13

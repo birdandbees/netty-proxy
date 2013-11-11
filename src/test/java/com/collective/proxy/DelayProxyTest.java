@@ -1,8 +1,12 @@
+package test.java.com.collective.proxy;
+
+import main.java.com.collective.proxy.DelayProxy;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import redis.clients.jedis.Jedis;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -133,6 +137,17 @@ public class DelayProxyTest {
         DelayProxy delayProxy1 = new DelayProxy(9000, 9002);
         DelayProxy delayProxy2 = new DelayProxy(9000, 9110);
         assertTrue(delayProxy1.equals(delayProxy2));
+    }
+
+    @Test
+    public void testRedisTimeout() {
+        DelayProxy delayProxy = new DelayProxy(9000, 6379);
+        delayProxy.start();
+        delayProxy.delay(1);
+        Jedis jedis = new Jedis("127.0.0.1", 9000);
+
+        jedis.set("kermit", "piggy");
+
     }
 
 

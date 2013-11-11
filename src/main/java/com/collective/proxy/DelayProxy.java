@@ -1,4 +1,4 @@
-/**
+package main.java.com.collective.proxy; /**
  * Created with IntelliJ IDEA.
  * User: jingjing
  * Date: 10/23/13
@@ -81,7 +81,7 @@ public class DelayProxy {
             return true;
         DelayProxy rhs = (DelayProxy) obj;
         return new EqualsBuilder()
-                .append(localPort, rhs.localPort )
+                .append(localPort, rhs.localPort)
                 .isEquals();
     }
 
