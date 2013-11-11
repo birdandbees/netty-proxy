@@ -131,16 +131,5 @@ public class DelayProxyTest {
         assertTrue(delayProxy1.equals(delayProxy2));
     }
 
-    @Test
-    public void testRedisTimeout() {
-        DelayProxy delayProxy = new DelayProxy(9000, 6379);
-        delayProxy.start();
-        delayProxy.delay(1);
-        Jedis jedis = new Jedis("127.0.0.1", 9000);
-
-        jedis.set("kermit", "piggy");
-
-    }
-
 
 }
