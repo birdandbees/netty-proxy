@@ -1,6 +1,5 @@
-package test.java.com.collective.proxy;
+package com.collective.proxy;
 
-import main.java.com.collective.proxy.DelayProxy;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,13 +14,6 @@ import java.io.InputStreamReader;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-/**
- * Created with IntelliJ IDEA.
- * User: jingjing
- * Date: 10/29/13
- * Time: 9:43 AM
- * To change this template use File | Settings | File Templates.
- */
 @RunWith(JUnit4.class)
 public class DelayProxyTest {
     private static TimestampServer testServer;
@@ -40,7 +32,7 @@ public class DelayProxyTest {
     }
 
     @BeforeClass
-    public static void setUp() throws IOException, InterruptedException, Exception {
+    public static void setUp() throws Exception {
         checkTestPortsAreAvailable();
         testServer = new TimestampServer(9002);
         testServer.run();

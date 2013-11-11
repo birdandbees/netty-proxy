@@ -1,4 +1,4 @@
-package test.java.com.collective.proxy;
+package com.collective.proxy;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -6,14 +6,6 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-/**
- * Created with IntelliJ IDEA.
- * User: jingjing
- * Date: 10/31/13
- * Time: 3:00 PM
- * To change this template use File | Settings | File Templates.
- */
 
 
 public class TimestampServerHandler extends ChannelInboundHandlerAdapter {

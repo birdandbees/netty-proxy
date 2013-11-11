@@ -1,10 +1,4 @@
-package test.java.com.collective.proxy; /**
- * Created with IntelliJ IDEA.
- * User: jingjing
- * Date: 10/31/13
- * Time: 2:59 PM
- * To change this template use File | Settings | File Templates.
- */
+package com.collective.proxy;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;

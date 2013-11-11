@@ -1,4 +1,4 @@
-package test.java.com.collective.proxy;
+package com.collective.proxy;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -9,13 +9,7 @@ import java.net.SocketTimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * Created with IntelliJ IDEA.
- * User: jingjing
- * Date: 10/31/13
- * Time: 2:59 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class LatencyTestClientHandler extends ChannelInboundHandlerAdapter {
 
     private static final Logger logger = Logger.getLogger(

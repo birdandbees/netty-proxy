@@ -1,10 +1,4 @@
-package main.java.com.collective.proxy; /**
- * Created with IntelliJ IDEA.
- * User: jingjing
- * Date: 10/29/13
- * Time: 10:37 AM
- * To change this template use File | Settings | File Templates.
- */
+package com.collective.proxy;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
